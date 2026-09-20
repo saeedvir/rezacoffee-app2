@@ -36,11 +36,20 @@ jobs:
       - name: Grant Execute Permission to Gradle
         run: chmod +x gradlew
 
-      # بیلد نسخه اشکال‌زدایی (Debug APK) - بدون نیاز به کلید امضا
+      # دانلود و ایجاد خودکار gradle-wrapper.jar در صورت نبودن در مخزن
+      - name: Ensure Gradle Wrapper JAR exists
+        run: |
+          if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
+            echo "gradle-wrapper.jar is missing in repo. Downloading official Gradle Wrapper..."
+            mkdir -p gradle/wrapper
+            curl -sLo gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.7.0/gradle/wrapper/gradle-wrapper.jar || gradle wrapper
+          fi
+
+      # بیلد نسخه اشکال‌زدایی (Debug APK)
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      # اعتبارسنجی و دیکود کردن فایل کلید امضا در صورت تعریف در Secrets
+      # استخراج کلید اختصاصی در صورت تعریف در Secrets
       - name: Decode Release Keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -56,16 +65,10 @@ jobs:
       - name: Build Release APK
         run: ./gradlew assembleRelease --stacktrace
         env:
-          KEYSTORE_PASSWORD: "S@eedab1"
-          KEY_ALIAS: "rezacoffee"
-          KEY_PASSWORD: "S@eedab1"
-          KEYSTORE_BASE64: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv/ETHX4luiO4jI9kfZDS
-uMnZeWPOTp2IIFiQjGwemMO9vOzIhPWW5DrGTFmhcJY7OPhkbHObUJVYz4TDmoIj
-VsxsCTW1vZ7rlffX+jOgKbbL8CSgz7OgAV3c+5AhJY/4ZdA7uVVllOB12IbaffHc
-gMq2JQ3ZS7EhwSTBwq13EIoVbtoieMRb8IqCqz/UhITpK0udHfGgTXTHZaCmN6g6
-T7PfP70C+4xTfbHtFIW9EfO7hhioJcswA34s12P2sBMxZDnJd3hJAFpHP36LNUs2
-choPw2i7iWd3cQ4zhRGScGRMk4fb+zO7CECWNg3a4tiKGx+Uzk8cKhY0dAlRGOCO
-TwIDAQAB"
+          KEYSTORE_PATH: "release-keystore.jks"
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       # تغییر نام فایل‌های خروجی برای شفافیت در دانلود
       - name: Prepare APK Outputs
@@ -78,7 +81,7 @@ TwIDAQAB"
             cp app/build/outputs/apk/debug/app-debug.apk output-apks/RezaCoffee-debug.apk
           fi
 
-      # ذخیره خروجی‌ها در آرتیفکت‌های گیت‌هاب برای دانلود تا ۳۰ روز
+      # ذخیره خروجی‌ها در آرتیفکت‌های گیت‌هاب (Artifacts)
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -94,7 +97,7 @@ TwIDAQAB"
           path: output-apks/RezaCoffee-release.apk
           retention-days: 30
 
-      # ساخت خودکار Release در گیت‌هاب هنگام ارسال Tag نسخه (مثلاً v1.0.0)
+      # ساخت خودکار Release در گیت‌هاب هنگام ارسال Tag نسخه
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -107,9 +110,5 @@ TwIDAQAB"
           prerelease: false
           body: |
             ## ☕ اپلیکیشن رسمی اندروید فروشگاه قهوه رضا (RezaCoffee)
-            - **وب‌سایت رسمی:** https://rezacoffee.ir/
-            - **نسخه انتشار:** `${{ github.ref_name }}`
-            - **حداقل اندروید پشتیبانی شده:** اندروید 7.0 نوقا (API 24) به بالا
-            - **فایل‌های پیوست:**
-              - `RezaCoffee-release.apk`: نسخه اصلی امضا شده جهت نصب توسط مشتریان
-              - `RezaCoffee-debug.apk`: نسخه دیباگ جهت بررسی توسعه‌دهندگان
+            - **وب‌سایت:** https://rezacoffee.ir/
+            - **نسخه:** `${{ github.ref_name }}`
