@@ -42,9 +42,15 @@ jobs:
 
       # اعتبارسنجی و دیکود کردن فایل کلید امضا در صورت تعریف در Secrets
       - name: Decode Release Keystore
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release-keystore.jks
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "Keystore secret detected. Decoding to app/release-keystore.jks..."
+            echo "$KEYSTORE_BASE64" | base64 --decode > app/release-keystore.jks
+          else
+            echo "Note: KEYSTORE_BASE64 is empty or not set. Release APK will be assembled without custom keystore."
+          fi
 
       # بیلد نسخه نهایی (Release APK)
       - name: Build Release APK
@@ -100,5 +106,4 @@ jobs:
             - **حداقل اندروید پشتیبانی شده:** اندروید 7.0 نوقا (API 24) به بالا
             - **فایل‌های پیوست:**
               - `RezaCoffee-release.apk`: نسخه اصلی امضا شده جهت نصب توسط مشتریان
-              - `RezaCoffee-debug.apk`: نسخه دیباگ جهت بررسی و آزمایش توسعه‌دهندگان
-            - **ویژگی‌ها:** سازگار با درگاه‌های بانکی عضو شتاب، کشیدن برای تازه‌سازی (Pull-to-Refresh)، مدیریت هوشمند قطعی اینترنت و پشتیبانی کامل از زبان فارسی (RTL).
+              - `RezaCoffee-debug.apk`: نسخه دیباگ جهت بررسی توسعه‌دهندگان
