@@ -154,6 +154,11 @@ class MainActivity : AppCompatActivity() {
             WebSettings.LOAD_CACHE_ELSE_NETWORK
         }
 
+        // پشتیبانی از محتوای ترکیبی (Mixed Content) جهت سازگاری با برخی لودرهای درگاه پرداخت
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
+        }
+
         // فعال‌سازی شتاب‌دهنده سخت‌افزاری
         webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
 
@@ -161,6 +166,7 @@ class MainActivity : AppCompatActivity() {
         val cookieManager = CookieManager.getInstance()
         cookieManager.setAcceptCookie(true)
         cookieManager.setAcceptThirdPartyCookies(webView, true)
+        cookieManager.flush()
 
         // سفارشی‌سازی User-Agent
         settings.userAgentString = settings.userAgentString + USER_AGENT_SUFFIX
@@ -274,34 +280,67 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleUrlNavigation(url: String): Boolean {
-        // هدایت لینک‌های خارجی مانند تماس، ایمیل، پیام‌رسان‌ها به اپلیکیشن مربوطه
-        when {
-            url.startsWith("tel:") || url.startsWith("mailto:") || url.startsWith("sms:") -> {
+        // ۱. هدایت پروتکل‌های خاص تماس، ایمیل و پیامک به اپ‌های بومی دستگاه
+        if (url.startsWith("tel:") || url.startsWith("mailto:") || url.startsWith("sms:")) {
+            try {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(intent)
                 return true
-            }
-            url.startsWith("whatsapp:") || url.contains("api.whatsapp.com") || url.contains("wa.me") -> {
-                try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivity(intent)
-                    return true
-                } catch (e: Exception) {
-                    Toast.makeText(this, "برنامه واتساپ یافت نشد", Toast.LENGTH_SHORT).show()
-                }
-            }
-            // باز کردن لینک‌های دانلود فایل به صورت مستقیم در دانلود منیجر
-            url.endsWith(".apk") || url.endsWith(".pdf") || url.endsWith(".zip") -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(intent)
-                return true
+            } catch (e: Exception) {
+                return false
             }
         }
-        // اگر آدرس مربوط به سایت یا درگاه‌های پرداخت شاپرک است، در همین وب‌ویو باز شود
+
+        // ۲. باز کردن لینک‌های دانلود مستقیم فایل (APK، PDF، ZIP) در مرورگر یا دانلود منیجر
+        if (url.endsWith(".apk") || url.endsWith(".pdf") || url.endsWith(".zip") || url.endsWith(".rar")) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+                return true
+            } catch (e: Exception) {
+                return false
+            }
+        }
+
+        // ۳. پشتیبانی از شمای intent:// برای درگاه‌های بانکی، اپ‌های شتاب و پرداخت
+        if (url.startsWith("intent://")) {
+            try {
+                val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                if (intent != null) {
+                    val packageManager = packageManager
+                    val info = packageManager.resolveActivity(intent, 0)
+                    if (info != null) {
+                        startActivity(intent)
+                        return true
+                    } else {
+                        val fallbackUrl = intent.getStringExtra("browser_fallback_url")
+                        if (!fallbackUrl.isNullOrEmpty()) {
+                            webView.loadUrl(fallbackUrl)
+                            return true
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                // ادامه رندر معمولی در صورت بروز خطا
+            }
+        }
+
+        // ۴. هدایت پروتکل‌های غیر http/https (مانند zarinpal://, shaparak://, tg://, whatsapp://)
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                startActivity(intent)
+                return true
+            } catch (e: Exception) {
+                return true // جلوگیری از نمایش خطای ERR_UNKNOWN_URL_SCHEME در وب‌ویو
+            }
+        }
+
+        // صفحات عادی سایت و درگاه‌های تحت وب شاپرک درون وب‌ویو باز می‌شوند
         return false
     }
 
-private fun handleErrorCode(errorCode: Int) {
+    private fun handleErrorCode(errorCode: Int) {
         progressBar.isVisible = false
         swipeRefreshLayout.isRefreshing = false
 

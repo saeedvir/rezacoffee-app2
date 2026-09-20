@@ -25,7 +25,9 @@ android {
             storePassword = System.getenv("KEYSTORE_PASSWORD") ?: ""
             keyAlias = System.getenv("KEY_ALIAS") ?: ""
             keyPassword = System.getenv("KEY_PASSWORD") ?: ""
-			enableV1Signing = true
+            
+            // تضمین امضای کامل V1، V2، V3 و V4 جهت نصب بدون خطا در اندروید 11، 12، 13 و 14
+            enableV1Signing = true
             enableV2Signing = true
             enableV3Signing = true
             enableV4Signing = true
@@ -40,10 +42,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // در صورت وجود کلید امضا، نسخه ریلیز ساین می‌شود
+            // در صورت وجود کلید امضا با پسورد، از امضای رسمی استفاده می‌شود؛ در غیر اینصورت از امضای debug استفاده می‌شود تا فایل خروجی در هر حالتی قابل نصب باشد
             val keystoreFile = file(System.getenv("KEYSTORE_PATH") ?: "release-keystore.jks")
-            if (keystoreFile.exists() && System.getenv("KEYSTORE_PASSWORD") != null) {
+            if (keystoreFile.exists() && !System.getenv("KEYSTORE_PASSWORD").isNullOrEmpty()) {
                 signingConfig = signingConfigs.getByName("release")
+            } else {
+                signingConfig = signingConfigs.getByName("debug")
             }
         }
         debug {

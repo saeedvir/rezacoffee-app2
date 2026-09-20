@@ -2,11 +2,37 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- مجوزهای دسترسی به اینترنت و وضعیت شبکه -->
+    <!-- مجوزهای دسترسی به اینترنت و بررسی وضعیت شبکه -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
+    <!-- مجوز اعلان‌ها برای اندروید 13 به بالا (برای پیگیری سفارشات) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- امکان باز کردن اپلیکیشن‌های بانکی، پرداخت شاپرک، تماس و پیام‌رسان‌ها در اندروید 11 به بالا -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="tel" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="sms" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="mailto" />
+        </intent>
+        <package android:name="com.whatsapp" />
+        <package android:name="ir.divar" />
+        <package android:name="com.farsitel.bazaar" />
+        <package android:name="ir.mservices.market" />
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -32,7 +58,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- دیپ‌لینک اختصاصی باز شدن لینک‌های rezacoffee.ir درون برنامه -->
+            <!-- پشتیبانی از باز شدن لینک‌های rezacoffee.ir درون اپلیکیشن (Deep Linking) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -43,6 +69,7 @@
             </intent-filter>
         </activity>
 
+        <!-- ارائه دهنده فایل برای آپلود اسناد یا تصاویر در وب‌سایت -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="ir.rezacoffee.app.fileprovider"
@@ -52,5 +79,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
     </application>
+
 </manifest>

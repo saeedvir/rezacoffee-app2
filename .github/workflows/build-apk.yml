@@ -36,7 +36,7 @@ jobs:
       - name: Grant Execute Permission to Gradle
         run: chmod +x gradlew
 
-      # دانلود و ایجاد خودکار gradle-wrapper.jar در صورت نبودن در مخزن
+      # اطمینان از وجود فایل gradle-wrapper.jar (دانلود خودکار در صورت نبودن در مخزن)
       - name: Ensure Gradle Wrapper JAR exists
         run: |
           if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
@@ -45,11 +45,11 @@ jobs:
             curl -sLo gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.7.0/gradle/wrapper/gradle-wrapper.jar || gradle wrapper
           fi
 
-      # بیلد نسخه اشکال‌زدایی (Debug APK)
+      # بیلد نسخه اشکال‌زدایی (Debug APK) - بدون نیاز به کلید امضا
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
 
-      # استخراج کلید اختصاصی در صورت تعریف در Secrets
+      # اعتبارسنجی و دیکود کردن فایل کلید امضا در صورت تعریف در Secrets
       - name: Decode Release Keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -81,7 +81,7 @@ jobs:
             cp app/build/outputs/apk/debug/app-debug.apk output-apks/RezaCoffee-debug.apk
           fi
 
-      # ذخیره خروجی‌ها در آرتیفکت‌های گیت‌هاب (Artifacts)
+      # ذخیره خروجی‌ها در آرتیفکت‌های گیت‌هاب برای دانلود تا ۳۰ روز
       - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -97,7 +97,7 @@ jobs:
           path: output-apks/RezaCoffee-release.apk
           retention-days: 30
 
-      # ساخت خودکار Release در گیت‌هاب هنگام ارسال Tag نسخه
+      # ساخت خودکار Release در گیت‌هاب هنگام ارسال Tag نسخه (مثلاً v1.0.0)
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
@@ -110,5 +110,10 @@ jobs:
           prerelease: false
           body: |
             ## ☕ اپلیکیشن رسمی اندروید فروشگاه قهوه رضا (RezaCoffee)
-            - **وب‌سایت:** https://rezacoffee.ir/
-            - **نسخه:** `${{ github.ref_name }}`
+            - **وب‌سایت رسمی:** https://rezacoffee.ir/
+            - **نسخه انتشار:** `${{ github.ref_name }}`
+            - **حداقل اندروید پشتیبانی شده:** اندروید 7.0 نوقا (API 24) به بالا
+            - **فایل‌های پیوست:**
+              - `RezaCoffee-release.apk`: نسخه اصلی امضا شده جهت نصب توسط مشتریان
+              - `RezaCoffee-debug.apk`: نسخه دیباگ جهت بررسی و آزمایش توسعه‌دهندگان
+            - **ویژگی‌ها:** سازگار با درگاه‌های بانکی عضو شتاب، کشیدن برای تازه‌سازی (Pull-to-Refresh)، مدیریت هوشمند قطعی اینترنت و پشتیبانی کامل از زبان فارسی (RTL).
