@@ -37,3 +37,5 @@
    git push origin v1.0.0
    ```
    سرورهای ابری گیت‌هاب به صورت خودکار فایل‌های `RezaCoffee-release.apk` و `RezaCoffee-debug.apk` را ساخته و در تب Releases قرار می‌دهند.
+
+up -1
