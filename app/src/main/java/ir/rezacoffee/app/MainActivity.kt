@@ -301,14 +301,13 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
-    private fun handleErrorCode(errorCode: Int) {
+private fun handleErrorCode(errorCode: Int) {
         progressBar.isVisible = false
         swipeRefreshLayout.isRefreshing = false
 
         when (errorCode) {
             WebViewClient.ERROR_HOST_LOOKUP,
-            WebViewClient.ERROR_CONNECT,
-            WebViewClient.ERROR_DISCONNECTED -> {
+            WebViewClient.ERROR_CONNECT -> {
                 showNoInternetError()
             }
             WebViewClient.ERROR_TIMEOUT -> {
@@ -334,7 +333,7 @@ class MainActivity : AppCompatActivity() {
     private fun showServerNotRespondingError(statusCode: Int) {
         layoutError.isVisible = true
         webView.isVisible = false
-        imgErrorIcon.setImageResource(R.drawable.ic_error_server)
+        imgErrorIcon.setImageResource(R.drawable.ic_error_wifi)
         textErrorTitle.text = getString(R.string.error_server_title)
         textErrorDesc.text = getString(R.string.error_server_desc, statusCode)
     }
@@ -342,7 +341,7 @@ class MainActivity : AppCompatActivity() {
     private fun showTimeoutError() {
         layoutError.isVisible = true
         webView.isVisible = false
-        imgErrorIcon.setImageResource(R.drawable.ic_error_timeout)
+        imgErrorIcon.setImageResource(R.drawable.ic_error_wifi)
         textErrorTitle.text = getString(R.string.error_timeout_title)
         textErrorDesc.text = getString(R.string.error_timeout_desc)
     }
@@ -350,7 +349,7 @@ class MainActivity : AppCompatActivity() {
     private fun showSslError() {
         layoutError.isVisible = true
         webView.isVisible = false
-        imgErrorIcon.setImageResource(R.drawable.ic_error_ssl)
+        imgErrorIcon.setImageResource(R.drawable.ic_error_wifi)
         textErrorTitle.text = getString(R.string.error_ssl_title)
         textErrorDesc.text = getString(R.string.error_ssl_desc)
     }
@@ -358,7 +357,7 @@ class MainActivity : AppCompatActivity() {
     private fun showGeneralError() {
         layoutError.isVisible = true
         webView.isVisible = false
-        imgErrorIcon.setImageResource(R.drawable.ic_error_general)
+        imgErrorIcon.setImageResource(R.drawable.ic_error_wifi)
         textErrorTitle.text = getString(R.string.error_general_title)
         textErrorDesc.text = getString(R.string.error_general_desc)
     }
