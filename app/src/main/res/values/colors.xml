@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- رنگ‌های هویت برند قهوه رضا -->
+    <color name="coffee_primary">#3E2723</color> <!-- قهوه‌ای تیره اسپرسو -->
+    <color name="coffee_primary_variant">#1B0000</color>
+    <color name="coffee_primary_light">#6A4F4B</color>
+    <color name="coffee_accent">#D4A373</color> <!-- کارامل زرین -->
+    <color name="coffee_surface">#FAF8F5</color> <!-- شیری کرمی ملایم -->
+    <color name="coffee_dark">#271815</color>
+    <color name="coffee_text_muted">#6C584C</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="offline_badge_bg">#E65100</color>
+    <color name="error_red">#D32F2F</color>
+    <color name="success_green">#388E3C</color>
+</resources>

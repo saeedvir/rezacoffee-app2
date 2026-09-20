@@ -1,0 +1,38 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- فنجان قهوه -->
+    <path
+        android:fillColor="#D4A373"
+        android:pathData="M8,18h24v10c0,5.5 -4.5,10 -10,10H18C12.5,38 8,33.5 8,28V18z" />
+    <!-- دسته فنجان -->
+    <path
+        android:strokeColor="#D4A373"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M32,22h4c2.2,0 4,1.8 4,4v2c0,2.2 -1.8,4 -4,4h-4" />
+    <!-- نعلبکی زیر فنجان -->
+    <path
+        android:strokeColor="#FAF8F5"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M4,42h32" />
+    <!-- خطوط بخار معطر قهوه -->
+    <path
+        android:strokeColor="#FAF8F5"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M14,14c0,-3 3,-3 3,-6s-3,-3 -3,-6" />
+    <path
+        android:strokeColor="#D4A373"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M20,14c0,-3 3,-3 3,-6s-3,-3 -3,-6" />
+    <path
+        android:strokeColor="#FAF8F5"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M26,14c0,-3 3,-3 3,-6s-3,-3 -3,-6" />
+</vector>

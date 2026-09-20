@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RezaCoffee</string>
+    <string name="brand_fa">قهوه رضا</string>
+    <string name="btn_retry">تلاش مجدد</string>
+    <string name="offline_mode_tag">آفلاین</string>
+    <string name="error_icon_desc">آیکون خطا</string>
+
+    <!-- پیام‌های خطای شبکه و بارگذاری -->
+    <string name="error_no_internet_title">اتصال به اینترنت برقرار نیست</string>
+    <string name="error_no_internet_desc">لطفاً اتصال اینترنت دستگاه خود (داده همراه یا وای‌فای) را بررسی کرده و مجدداً تلاش نمایید.</string>
+    <string name="error_no_internet_short">اینترنت در دسترس نیست</string>
+
+    <string name="error_server_title">سرور پاسخگو نیست</string>
+    <string name="error_server_desc">سرور وب‌سایت در حال حاضر در دسترس نیست یا با خطای %1$d مواجه شده است. همکاران فنی ما در حال بررسی موضوع هستند.</string>
+
+    <string name="error_timeout_title">مهلت اتصال به پایان رسید</string>
+    <string name="error_timeout_desc">پاسخی از سرور در زمان مقرر دریافت نشد. ممکن است سرعت اینترنت پایین باشد.</string>
+
+    <string name="error_ssl_title">خطای امنیتی ارتباط</string>
+    <string name="error_ssl_desc">امکان برقراری ارتباط امن با سرور وجود ندارد. لطفاً تاریخ و ساعت گوشی خود را تنظیم کنید.</string>
+
+    <string name="error_general_title">خطا در بارگذاری صفحه</string>
+    <string name="error_general_desc">متأسفانه بارگذاری صفحه وب‌سایت با مشکل مواجه شد. لطفاً دوباره امتحان کنید.</string>
+
+    <string name="exit_double_press_notice">برای خروج از برنامه، دوباره دکمه بازگشت را لمس کنید</string>
+</resources>

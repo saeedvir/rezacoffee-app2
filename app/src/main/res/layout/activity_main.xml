@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    android:background="@color/coffee_surface"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- نوار وضعیت بالای صفحه (App Header) -->
+        <LinearLayout
+            android:id="@+id/appHeader"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/coffee_primary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:elevation="4dp">
+
+            <ImageView
+                android:id="@+id/imgBrandLogo"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_rezacoffee_logo"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:id="@+id/textBrandTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- بنر هشدار حالت آفلاین کوچک در هدر -->
+            <TextView
+                android:id="@+id/offlineBanner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_offline_tag"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/offline_mode_tag"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <!-- نوار پیشرفت بارگذاری صفحه (Progress Bar) -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_below="@id/appHeader"
+            android:indeterminate="false"
+            android:max="100"
+            android:progressTint="@color/coffee_accent"
+            android:progressBackgroundTint="@color/coffee_primary_light"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:progress="45" />
+
+        <!-- لایه کشیدن به پایین برای بارگذاری مجدد (SwipeRefreshLayout) -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/progressBar">
+
+            <!-- عنصر اصلی وب‌ویو -->
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <!-- صفحه خطای اختصاصی و زیبا (Error Layout) با طراحی راست به چپ و تم قهوه رضا -->
+        <LinearLayout
+            android:id="@+id/layoutError"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/appHeader"
+            android:background="@color/coffee_surface"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="28dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imgErrorIcon"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_error_wifi"
+                android:contentDescription="@string/error_icon_desc" />
+
+            <TextView
+                android:id="@+id/textErrorTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/error_no_internet_title"
+                android:textColor="@color/coffee_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/textErrorDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="20dp"
+                android:text="@string/error_no_internet_desc"
+                android:textColor="@color/coffee_text_muted"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp"
+                android:gravity="center" />
+
+            <!-- دکمه تلاش مجدد با انیمیشن و پس‌زمینه گرم -->
+            <Button
+                android:id="@+id/btnRetry"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="26dp"
+                android:backgroundTint="@color/coffee_primary"
+                android:paddingHorizontal="32dp"
+                android:text="@string/btn_retry"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="24dp"
+                android:elevation="3dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

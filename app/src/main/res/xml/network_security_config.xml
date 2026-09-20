@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    
+    <!-- دامنه‌های مجاز شاپرک و زرین‌پال و وب‌سایت اصلی -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">rezacoffee.ir</domain>
+        <domain includeSubdomains="true">shaparak.ir</domain>
+        <domain includeSubdomains="true">zarinpal.com</domain>
+        <domain includeSubdomains="true">sep.ir</domain>
+        <domain includeSubdomains="true">asanpardakht.ir</domain>
+        <domain includeSubdomains="true">sadadpsp.ir</domain>
+    </domain-config>
+</network-security-config>
