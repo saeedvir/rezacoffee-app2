@@ -1,4 +1,3 @@
-```kotlin
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -169,4 +168,3 @@ dependencies {
         "androidx.constraintlayout:constraintlayout:2.1.4"
     )
 }
-```
