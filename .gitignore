@@ -1,17 +1,33 @@
+```gitignore
+# Gradle
+.gradle/
+build/
+
+# Android Studio
+.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+
+# Local configuration
 local.properties
 
-# نادیده‌گرفتن فایل‌های جار به جز فایل رسمی گردل رپر
-*.jar
-!gradle/wrapper/gradle-wrapper.jar
+# APK / AAB
+*.apk
+*.aab
+
+# Release signing keys
+*.jks
+*.keystore
+release-keystore.jks
+
+# Generated files
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Kotlin
+.kotlin/
+
+# OS files
+.DS_Store
+Thumbs.db
+```
